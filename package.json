@@ -1,0 +1,9 @@
+{
+    "name":"obj2simplekv",
+    "version":"0.0.1",
+    "private":true,
+    "devDependencies":{
+        "grunt":"~0.4.1",
+        "grunt-contrib-jshint":"~0.6.0"
+    }
+}

@@ -1,0 +1,27 @@
+<html>
+<head>
+<title>Test obj2simplekv Js</title>
+<script
+	src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="../js/obj_skv_helper.js"></script>
+</head>
+<body>
+	Open the console to see to results!!
+	<script>
+		$.getJSON("obj.json", function(data) {
+
+			var obj = data;
+
+			console.log('original obj', obj);
+
+			var simplekv = objSkvHelper.obj2simplekv(obj);
+			console.log('simplekv', simplekv);
+
+			var newobj = objSkvHelper.simplekv2obj(simplekv);
+			console.log('newobj converted back', newobj);
+
+			console.log('obj equals newobj: ', JSON.stringify(obj) == JSON.stringify(newobj));
+		});
+	</script>
+</body>
+</html>
