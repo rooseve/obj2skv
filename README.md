@@ -77,6 +77,40 @@ If to save the skv as 2 columns in mysql, one for key, one for value, the column
 - "hello" becomes "Shello", with prefix "S" to identify string type
 
 
+###Real example
+
+Object: 
+
+	{
+	    "a":null,
+	    "b":[
+	        "x",
+	        1,
+	        2.4,
+	        1e2,
+	        true
+	    ],
+	    "c":{
+	        "d":{
+	            "f":"hello"
+	        },
+	        "z":"hi"
+	    }
+	}
+
+Convert to skv:
+
+	{ 
+		'$a': 'N', //N just means null type
+		'$b.@0': 'Sx', //key prefix '@' means it's an array element
+		'$b.@1': 'I1', //I means int type
+		'$b.@2': 'F2.4', //F means float type
+		'$b.@3': 'I100',
+		'$b.@4': 'B1', //B means boolean type
+		'$c.$d.$f': 'Shello', //S means string type
+		'$c.$z': 'Shi'
+	}
+
 ### How to use?
 
 obj2skv got JS(works on Browser/Node) and PHP version
@@ -113,4 +147,3 @@ obj2skv got JS(works on Browser/Node) and PHP version
 	
 	//convert skv back to object
 	$newobj = ObjSkvHelper::simplekv2obj ( $simplekv );
-
