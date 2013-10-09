@@ -1,9 +1,9 @@
 obj2skv
 ============
 
-### What are "*obj*" and "*skv*" mean?
+### What are "obj" and "skv" mean?
 
-**obj** just means **object**, like:
+**obj** just means **object**, in json, it's like:
 
 	{ 	
 		a: 1, 
@@ -12,7 +12,7 @@ obj2skv
 		}
 	}
 
-**skv** means **simple key value** pairs, like:
+**skv** means **simple key value** pairs, or simple hash object, like this:
 
 	{
 		k1: v1,
@@ -20,13 +20,13 @@ obj2skv
 		k3: v3
 	}
 
-where k1,k2... are just strings, v1,v2..are just simple type values, e.g. string, number.
+The key point of skv is "**simple**" key/value type, keys are just strings, values are just simple type values, e.g. string, number, no object or array allowed.
 
 obj2skv provides two-way conversion functions, which convert object to skv and back.
 
-### Why useful?
+###Why useful?
 
-How to save an object in mysql? For example this object:
+Given an object like this:
 
 	{
 		a: 1,
@@ -37,17 +37,15 @@ How to save an object in mysql? For example this object:
 		} 
 	}
 
-
-Mysql is a relational database, it saves data in **2-dimensional** tables, but an arbitrary object is not 2-dimensional restricted, it's **n-dimensional**. By convert an object to skv, it's can be saved in 2 columns, one for key, and one for value.
-
+How to save it in Mysql? As we know, Mysql is a relational database, it saves data in **2-dimensional** tables, but an arbitrary object is not 2-dimensional restricted, it's **n-dimensional**. By converting an object to skv, it's can be saved in 2 columns, one for key, and one for value.
 
 ###How it works?
 
-To reference an value in an object obj, we need the key path, like:
+To reference an value in an object obj, there will be a path of keys, like this:
 
 	obj[k1][k2][k3] = v 
 
-Skv just concat the path to a single key, like:
+In skv, the keys are joined into a single key, like:
 
 	skv[k1.k2.k3] = v
 
@@ -70,14 +68,14 @@ Convert to skv, which will be like:
 
 #####What about column type?
 
-If to save the skv as 2 columns in mysql, one for key, one for value, the column type should be the same. Keys are all strings, no problem, but the values can be string, number...To keep the type information, and make the values got the same type, some prefixes are add to the value, for example, 
+If to save the skv as 2 columns in mysql, one for key, one for value, the column type should be the same. Keys are all strings, no problem, but the values can be string, number...To keep the type information, and make the values got the same type, some prefixes are added, and values all become strings, for example, 
 
 
-- 1 becomes "I1", with prefix "I" to identify int type
-- "hello" becomes "Shello", with prefix "S" to identify string type
+- Int 1 becomes "I1", with prefix "I" to identify int type
+- String "hello" becomes "Shello", with prefix "S" to identify string type
 
 
-###Real example
+###A real example
 
 Object: 
 
@@ -102,7 +100,7 @@ Convert to skv:
 
 	{ 
 		'$a': 'N', //N just means null type
-		'$b.@0': 'Sx', //key prefix '@' means it's an array element
+		'$b.@0': 'Sx', //key prefix '@' means it's an element of array
 		'$b.@1': 'I1', //I means int type
 		'$b.@2': 'F2.4', //F means float type
 		'$b.@3': 'I100',
@@ -118,14 +116,13 @@ obj2skv got JS(works on Browser/Node) and PHP version
 ####Browser
 
 	<script src="/js/obj_skv_helper.js"></script>
-	<script>
 
+	<script>
 	//convert an object to skv
 	var simplekv = objSkvHelper.obj2simplekv(obj);
 
 	//convert skv back to object
 	var newobj = objSkvHelper.simplekv2obj(simplekv);
-
 	</script>
 
 ####Node
