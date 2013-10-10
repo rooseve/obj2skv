@@ -1,6 +1,8 @@
 obj2skv
 ============
 
+Convert object to simple key value pairs and back
+
 ### What are "obj" and "skv" mean?
 
 **obj** just means **object**, in json, it's like:

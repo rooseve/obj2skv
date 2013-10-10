@@ -1,7 +1,17 @@
 {
-    "name":"obj2simplekv",
-    "version":"0.0.1",
-    "private":true,
+    "name":"obj2skv",
+    "version":"0.1.0",
+    "author":"rooseve <rooseve6891@gmail.com>",
+    "description":"Convert object to simple key value pairs and back",
+    "repository":{
+        "type":"git",
+        "url":"https://github.com/rooseve/obj2skv.git"
+    },
+    "main":"./js/obj_skv_helper.js",
+    "keywords":[
+        "skv",
+        "keyvalue"
+    ],
     "devDependencies":{
         "grunt":"~0.4.1",
         "grunt-contrib-jshint":"~0.6.0"
