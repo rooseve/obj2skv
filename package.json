@@ -1,8 +1,11 @@
 {
     "name":"obj2skv",
     "version":"0.1.0",
-    "author":"rooseve <rooseve6891@gmail.com>",
-    "description":"Convert object to simple key value pairs and back",
+    "author":{
+        "name":"rooseve",
+        "email":"rooseve6891@gmail.com"
+    },
+    "description":"Convert an object to simple key value pairs and back",
     "repository":{
         "type":"git",
         "url":"https://github.com/rooseve/obj2skv.git"
@@ -10,7 +13,9 @@
     "main":"./js/obj_skv_helper.js",
     "keywords":[
         "skv",
-        "keyvalue"
+        "keyvalue",
+        "object",
+        "mysql"
     ],
     "devDependencies":{
         "grunt":"~0.4.1",
