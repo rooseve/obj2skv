@@ -1,7 +1,7 @@
 obj2skv
 ============
 
-Convert object to simple key value pairs and back
+Convert an object to simple key value pairs and back. This should be helpful if you want to save an object as multiple rows in relational db, like Mysql.
 
 ### What are "obj" and "skv" mean?
 
@@ -43,11 +43,11 @@ How to save it in Mysql? As we know, Mysql is a relational database, it saves da
 
 ###How it works?
 
-To reference an value in an object obj, there will be a path of keys, like this:
+To get a value in an object obj, there will be a path of keys, like this:
 
 	obj[k1][k2][k3] = v 
 
-In skv, the keys are joined into a single key, like:
+In skv, the keys are joined into a single key, like this:
 
 	skv[k1.k2.k3] = v
 
