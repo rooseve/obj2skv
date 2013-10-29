@@ -59,11 +59,10 @@
 		 *	  }
 		 * </code>
 		 * 
-		 * Prefixes are added to identify the value type(e.g. "F" means float)
-		 * and parent element type(e.g. "@" means array)
+		 * Prefixes are added to identify the value type(e.g. "F" means float) and parent element type(e.g. "@" means
+		 * array)
 		 * 
-		 * Keys and values are all simple strings, so you can save these as
-		 * multiple rows in db, like mysql
+		 * Keys and values are all simple strings, so you can save these as multiple rows in db, like mysql
 		 */
 		function obj2simplekv(obj) {
 
@@ -225,13 +224,23 @@
 
 	});
 
-})(typeof define === 'function' && define.amd ? define : function(factory) {
+})(typeof define === 'function' && define.amd ? define : function(name, deps, factory) {
 
 	var isNodeSvr = typeof module != 'undefined' && module.exports;
 
 	if (isNodeSvr) {
 
-		module.exports = factory(require);
+		var mfunc = null, alArgs = [ name, deps, factory ];
+
+		//find the right factory func, as define has multiple args options
+		for ( var i = 0, len = alArgs.length; i < len; i++) {
+			if (typeof (alArgs[i]) == 'function') {
+				mfunc = alArgs[i];
+				break;
+			}
+		}
+
+		module.exports = mfunc(require);
 
 	} else if (typeof (window) != 'undefined') {
 
