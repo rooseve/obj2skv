@@ -9,10 +9,14 @@ fs.readFile(file, 'utf8', function(err, data) {
 
 	console.log('original obj:\n', obj, '\n');
 
-	var simplekv = objSkvHelper.obj2simplekv(obj);
+	var simplekv = objSkvHelper.obj2simplekv(obj, {
+		KDivider : '.'
+	});
 	console.log('simplekv:\n', simplekv, '\n');
 
-	var newobj = objSkvHelper.simplekv2obj(simplekv);
+	var newobj = objSkvHelper.simplekv2obj(simplekv, {
+		KDivider : '.'
+	});
 	console.log('newobj converted back:\n', newobj, '\n');
 
 	console.log('obj equals newobj: ', JSON.stringify(obj) == JSON.stringify(newobj));

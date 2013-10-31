@@ -31,6 +31,31 @@
 		};
 
 		/**
+		 * extend an object
+		 * 
+		 * objExtend(obj, {a:1}, {b:2}...)
+		 */
+		function objExtend(dst) {
+
+			if (!dst)
+				dst = {};
+
+			Array.prototype.slice.call(arguments, 1).forEach(function(source) {
+
+				if (!source)
+					return;
+
+				for ( var prop in source) {
+					if (source.hasOwnProperty(prop)) {
+						dst[prop] = source[prop];
+					}
+				}
+			});
+
+			return dst;
+		}
+
+		/**
 		 * Given an object, e.g.
 		 * 
 		 * <code>
@@ -64,11 +89,13 @@
 		 * 
 		 * Keys and values are all simple strings, so you can save these as multiple rows in db, like mysql
 		 */
-		function obj2simplekv(obj) {
+		function obj2simplekv(obj, opts) {
 
 			if (!isObject(obj)) {
 				throw new Error('obj supposed to be an object/array');
 			}
+
+			var options = objExtend({}, consts, opts);
 
 			var simplekv = {}, nxkv, attrKey, attrVal, isArr = isArray(obj);
 
@@ -77,19 +104,19 @@
 				if (!obj.hasOwnProperty(k))
 					continue;
 
-				attrKey = (isArr ? consts.KTypeArray : consts.KTypeObj) + k;
+				attrKey = (isArr ? options.KTypeArray : options.KTypeObj) + k;
 
-				if (attrKey.indexOf(consts.KDivider) >= 0) {
-					throw new Error('obj key could not contains the divider: ' + consts.KDivider);
+				if (attrKey.indexOf(options.KDivider) >= 0) {
+					throw new Error('obj key could not contains the divider: ' + options.KDivider);
 				}
 
 				if (isObject(obj[k])) {
 
 					//convert recursively
-					nxkv = obj2simplekv(obj[k]);
+					nxkv = obj2simplekv(obj[k], options);
 
 					for ( var nk in nxkv) {
-						simplekv[attrKey + consts.KDivider + nk] = nxkv[nk];
+						simplekv[attrKey + options.KDivider + nk] = nxkv[nk];
 					}
 
 				} else {
@@ -98,15 +125,15 @@
 					switch (typeof (obj[k])) {
 
 						case 'string':
-							attrVal = consts.VTypeString + obj[k];
+							attrVal = options.VTypeString + obj[k];
 							break;
 
 						case 'number':
-							attrVal = (obj[k] % 1 ? consts.VTypeFloat : consts.VTypeInt) + obj[k];
+							attrVal = (obj[k] % 1 ? options.VTypeFloat : options.VTypeInt) + obj[k];
 							break;
 
 						case 'boolean':
-							attrVal = consts.VTypeBoolean + (obj[k] ? 1 : 0);
+							attrVal = options.VTypeBoolean + (obj[k] ? 1 : 0);
 							break;
 
 						//case 'undefined':
@@ -114,7 +141,7 @@
 						//case 'function':
 
 						case 'object':
-							attrVal = consts.VTypeNull;
+							attrVal = options.VTypeNull;
 							break;
 
 						default:
@@ -138,26 +165,28 @@
 		 * 
 		 * @returns obj
 		 */
-		function simplekv2obj(simpkv) {
+		function simplekv2obj(simpkv, opts) {
 
 			if (!isObject(simpkv)) {
 				throw new Error('simpkv supposed to be an object');
 			}
 
+			var options = objExtend({}, consts, opts);
+
 			var obj = {
 				_ : null
-			}, cks, pre_ck, cur_ck, pre_obj, isArr, rawVal, val, tlen = consts.VTypeString.length;
+			}, cks, pre_ck, cur_ck, pre_obj, isArr, rawVal, val, tlen = options.VTypeString.length;
 
 			for ( var mk in simpkv) {
 
-				cks = mk.split(consts.KDivider);
+				cks = mk.split(options.KDivider);
 
 				pre_ck = '_';
 				pre_obj = obj;
 
 				for ( var i = 0; i < cks.length; i++) {
 
-					isArr = cks[i][0] == consts.KTypeArray;
+					isArr = cks[i][0] == options.KTypeArray;
 
 					cur_ck = cks[i].substr(1);
 
@@ -176,23 +205,23 @@
 				rawVal = simpkv[mk].substr(tlen);
 
 				switch (simpkv[mk].substr(0, tlen)) {
-					case consts.VTypeString:
+					case options.VTypeString:
 						val = rawVal;
 						break;
 
-					case consts.VTypeInt:
+					case options.VTypeInt:
 						val = parseInt(rawVal, 10);
 						break;
 
-					case consts.VTypeFloat:
+					case options.VTypeFloat:
 						val = parseFloat(rawVal);
 						break;
 
-					case consts.VTypeBoolean:
+					case options.VTypeBoolean:
 						val = rawVal == '1' ? true : false;
 						break;
 
-					case consts.VTypeNull:
+					case options.VTypeNull:
 						val = null;
 						break;
 
